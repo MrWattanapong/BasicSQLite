@@ -26,7 +26,7 @@ public class MainActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         firstName = (EditText) findViewById(R.id.firstName);
-        lastName = (EditText) findViewById(R.id.lastName);
+        lastName = (EditText) findViewById(R.id.lastname);
         dataSource = new CommentsDataSource(this);
         dataSource.open();
         List<Comment> values = dataSource.getAllComments();
@@ -37,7 +37,13 @@ public class MainActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-
+        ArrayAdapter<Comment>adapter = (ArrayAdapter<Comment>)getListAdapter();
+        Comment comment = null;
+        if (getListAdapter().getCount()>0){
+            comment = (Comment)getListAdapter().getItem(0);
+            dataSource.deleteComment(comment);
+            adapter.remove(comment);
+        }
     }
 
     public void onClick(View view){
@@ -53,13 +59,13 @@ public class MainActivity extends ListActivity {
                 comment = dataSource.createComment(name);
                 adapter.add(comment);
                 break;
-            case R.id.deleteBtn:
-                if (getListAdapter().getCount()>0){
-                    comment = (Comment)getListAdapter().getItem(0);
-                    dataSource.deleteComment(comment);
-                    adapter.remove(comment);
-                }
-                break;
+//            case R.id.deleteBtn:
+//                if (getListAdapter().getCount()>0){
+//                    comment = (Comment)getListAdapter().getItem(0);
+//                    dataSource.deleteComment(comment);
+//                    adapter.remove(comment);
+//                }
+//                break;
         }
         adapter.notifyDataSetChanged();
     }
