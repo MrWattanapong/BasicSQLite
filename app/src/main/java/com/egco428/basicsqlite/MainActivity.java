@@ -40,7 +40,7 @@ public class MainActivity extends ListActivity {
         ArrayAdapter<Comment>adapter = (ArrayAdapter<Comment>)getListAdapter();
         Comment comment = null;
         if (getListAdapter().getCount()>0){
-            comment = (Comment)getListAdapter().getItem(0);
+            comment = (Comment)getListAdapter().getItem(position);
             dataSource.deleteComment(comment);
             adapter.remove(comment);
         }
