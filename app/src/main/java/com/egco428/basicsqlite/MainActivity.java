@@ -4,8 +4,10 @@ import android.app.ListActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -16,16 +18,26 @@ import java.util.Random;
 
 public class MainActivity extends ListActivity {
     private CommentsDataSource dataSource;
+    EditText firstName;
+    EditText lastName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        firstName = (EditText) findViewById(R.id.firstName);
+        lastName = (EditText) findViewById(R.id.lastName);
         dataSource = new CommentsDataSource(this);
         dataSource.open();
         List<Comment> values = dataSource.getAllComments();
         ArrayAdapter<Comment> adapter = new ArrayAdapter<Comment>(this,android.R.layout.simple_list_item_1, values);
         setListAdapter(adapter);
+    }
+
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        
     }
 
     public void onClick(View view){
@@ -36,8 +48,7 @@ public class MainActivity extends ListActivity {
                 //String[] comments = new String[]{"Good","Cool","#whatever","Very Nice"};
                 //int nextINT = new Random().nextInt(4);
                 //comment = dataSource.createComment(comments[nextINT]);
-                EditText firstName = (EditText) findViewById(R.id.firstName);
-                EditText lastName = (EditText) findViewById(R.id.lastName);
+
                 String name = firstName.getText().toString()+"  "+lastName.getText().toString();
                 comment = dataSource.createComment(name);
                 adapter.add(comment);
